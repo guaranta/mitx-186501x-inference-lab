@@ -2,32 +2,45 @@
 
 **MITx 18.6501x — Fundamentals of Statistics**
 
-Laboratório de estatística inferencial: MLE, intervalos de confiança, testes de hipótese, delta method e detecção de drift em modelos de produção.
+Laboratório de estatística inferencial: intervalos de confiança, delta method, testes de hipótese e **monitoramento de drift** em scores de modelos de produção.
 
-| Módulo | Conteúdo | Comando |
-|--------|----------|---------|
-| `notebooks/` | 10 notebooks (CIs, delta method, hypothesis testing, MLE) | Jupyter |
-| `scripts/` | Versões Python dos notebooks iniciais | `python scripts/...` |
-| `homeworks/` | Delta method, testes Bernoulli e two-sample | `python homeworks/hw2_delta_method.py` |
-| `model-drift/` | KS test + PSI para scores de modelo | `python model-drift/run.py` |
+---
+
+## Resultados — model drift (synthetic)
+
+| Métrica | Valor | Threshold |
+|---------|-------|-----------|
+| KS statistic | **0.178** | — |
+| KS p-value | **< 0.001** | α = 0.05 → drift detectado |
+| PSI | **0.191** | alerta se > 0.2 |
+| Δ mean score | 0.702 → 0.659 | −6.2% shift |
+
+![Distribuições e PSI por decil](docs/figures/drift_detection.png)
+
+---
+
+## Módulos
+
+| Módulo | Técnica | Comando |
+|--------|---------|---------|
+| `notebooks/` | 10 notebooks (MLE, CIs, hypothesis tests) | Jupyter |
+| `homeworks/` | Delta method, Bernoulli, two-sample | `python homeworks/hw2_delta_method.py` |
+| `model-drift/` | KS test + PSI | `python model-drift/run.py` |
+
+## Fundamentos
+
+**Delta method:** `Var(g(X̄)) ≈ [g'(μ)]² · Var(X̄)/n`
+
+**KS test:** `D = sup_x |F_ref(x) − F_cur(x)|`
+
+**PSI:** `Σ (p_cur − p_ref) · ln(p_cur/p_ref)` — Population Stability Index
 
 ## Setup
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
 pip install -r requirements.txt
-python model-drift/run.py
+python docs/generate_figures.py
 ```
-
-## Origem acadêmica
-
-Notebooks baseados em [mitx-stats-notes](https://github.com/guaranta/mitx-stats-notes) (comunidade 18.6501x). Homeworks e model-drift são implementações originais inspiradas nos problem sets do curso.
-
-## Portfólio
-
-- [Portfolio AI Engineer / CTO](https://portfolio-ai-cto-guaranta.netlify.app)
-- [Fórmulas ATE, DiD, power](docs/portfolio-link.md)
 
 ## Autor
 
